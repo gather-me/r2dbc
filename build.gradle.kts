@@ -35,12 +35,27 @@ tasks.withType<KotlinCompile> {
 }
 
 publishing {
+	repositories {
+		maven {
+			name = "Gitlab"
+			url = uri("https://gitlab.com/api/v4/projects/gather/packages/maven")
+			credentials(HttpHeaderCredentials::class.java) {
+				name = "Deploy-Token"
+				value = "n8av-ppL26gFP6XBi4Qf"
+			}
+			authentication {
+				create("header", HttpHeaderAuthentication::class)
+			}
+		}
+	}
+
 	publications {
 		create<MavenPublication>("artifact") {
 			from(components["java"])
 		}
 	}
 }
+
 
 tasks.withType<Test> {
 	useJUnitPlatform()
